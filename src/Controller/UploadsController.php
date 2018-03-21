@@ -62,7 +62,7 @@ class UploadsController extends AppController
             }
             else{//no errors validating file entity
             
-                if (move_uploaded_file($this->request->data['CSV']['tmp_name'], "webroot/".$filePath)) {
+                if (move_uploaded_file($this->request->data['CSV']['tmp_name'], $filePath)) {
                     
                     
                     if ($this->Files->save($file)){
@@ -111,7 +111,7 @@ class UploadsController extends AppController
     */
     public function getCSVData($filePath){
         //Read the file into an array
-        $csv = array_map('str_getcsv', file("webroot/".$filePath));
+        $csv = array_map('str_getcsv', file($filePath));
         //change header to be key of each value supplied
         array_walk($csv, function(&$a) use ($csv) {
         $a = array_combine($csv[0], $a);

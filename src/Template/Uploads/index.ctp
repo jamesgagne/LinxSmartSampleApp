@@ -26,7 +26,7 @@
         <h5 class="modal-title" style="text-align: center;">Loading</h5>
       </div>
       <div class="modal-body">
-         <p style="text-align: center;">Processing Data Please Wait...&nbsp;<img src="img/loading.gif" /></p>
+         <p style="text-align: center;">Processing Data Please Wait...&nbsp;<img src="<?= $this->request->webroot?>img/loading.gif" /></p>
       </div>
       <div class="modal-footer">
         
