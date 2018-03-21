@@ -56,7 +56,8 @@ class LocationsTable extends Table
             ->requirePresence('street', 'create')
             ->notEmpty('street')
             ->add('street', 'custom', [
-            'rule' => function ($value, $context){
+            'rule' => function ($value, $context){ 
+            //custom function to validate if record already exists and update it
                 $flag = true;
                 $locationsTable = TableRegistry::get('Locations');
                 $query = $locationsTable->find();
@@ -107,22 +108,25 @@ class LocationsTable extends Table
         return $validator;
     }
 
-        
-        public function afterSave($event,$entity){
-        if ($entity->isNew()) {
-            $locationsTable = TableRegistry::get('Locations');
-            $address = urlencode($entity['street'] . ", " . $entity['city']. ", " . $entity['zip']. ", " . $entity['country']);
-            $key = 'AIzaSyAK-NWUAnfQXs2j5vRGc-QfH7TgUDyMVGA';
-        // Call the geocoding API with this location
-            $xmlFile = file_get_contents("https://maps.googleapis.com/maps/api/geocode/xml?address={$address}&sensor=false&key={$key}");
+    /*
+    after new location has been saved get and update its geolocation coordinates from google maps api
+    */    
+    public function afterSave($event,$entity){
+    if ($entity->isNew()) {
+        $locationsTable = TableRegistry::get('Locations');
+        $address = urlencode($entity['street'] . ", " . $entity['city']. ", " . $entity['zip']. ", " . $entity['country']);
+        //key is hardcoded here but should normally be held in a settings table
+        $key = 'AIzaSyAK-NWUAnfQXs2j5vRGc-QfH7TgUDyMVGA';
+    // Call the geocoding API with this location
+        $xmlFile = file_get_contents("https://maps.googleapis.com/maps/api/geocode/xml?address={$address}&sensor=false&key={$key}");
 
-        // get the longitude and latitude data from this location
-            $xmlObj = Xml::build($xmlFile);
-            //die();
-            if ($xmlObj->status == 'ZERO_RESULTS'){
-                $locationsTable->delete($locationsTable->get($entity['id']));
-            }
-            else{
+    // get the longitude and latitude data from this location
+        $xmlObj = Xml::build($xmlFile);
+        //die();
+        if ($xmlObj->status == 'ZERO_RESULTS'){//no result found so delete the record
+            $locationsTable->delete($locationsTable->get($entity['id']));
+        }
+        else{
             $longitude = (string)$xmlObj->result->geometry->location->lng;
             $latitude = (string)$xmlObj->result->geometry->location->lat ; 
 
@@ -131,11 +135,9 @@ class LocationsTable extends Table
             $location->lng = $longitude;
             $location->lat = $latitude;
             $locationsTable->save($location);
-            }
-            
         }
+        
+    }
 
-        }
+    }
 }
-//truncate `files`;
-//truncate `locations`;

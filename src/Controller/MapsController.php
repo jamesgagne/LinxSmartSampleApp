@@ -30,7 +30,7 @@ class MapsController extends AppController
         $this->TPL['title'] = "LinxSmart Sample Assignment";
         $this->TPL['msg'] = "Please upload a CSV";
         $query = $this->Locations->find();
-        
+        //show upload page with proper flash message
         if ($query->isEmpty()){
             $this->redirect(
             ['controller' => 'Uploads', 'action' => 'redirected']
@@ -46,6 +46,9 @@ class MapsController extends AppController
 
     }
 
+        /*
+        Sends email with content provided by contact modal
+        */
         public function email(){
             $data = $this->request->getData();
             $email = new Email('default');

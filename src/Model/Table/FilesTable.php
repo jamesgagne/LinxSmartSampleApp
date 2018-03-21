@@ -62,7 +62,7 @@ class FilesTable extends Table
             ->maxLength('path', 250)
             ->requirePresence('path', 'create')
             ->notEmpty('path');
-
+        //custom validator to verify file is type csv    
         $validator->add('CSV', 'type', 
                     [
                      'message' => 'File type must be CSV',   
