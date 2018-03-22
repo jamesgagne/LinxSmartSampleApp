@@ -50,9 +50,11 @@ class MapsController extends AppController
         Sends email with content provided by contact modal
         */
         public function email(){
+            
+
             $data = $this->request->getData();
             $email = new Email('default');
-            $email->from(['james.gagne@hotmail.ca' => 'LinxSmart Sample Application'])
+            $email->from(['jamesedwardgagne@gmail.com' => 'LinxSmart Sample Application'])
                 ->to('developer@linxsmart.com')
                 ->subject('LinxSmart Sample Application Contact')
                 ->send($data['msg']);
