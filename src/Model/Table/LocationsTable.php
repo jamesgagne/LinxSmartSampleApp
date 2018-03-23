@@ -114,12 +114,11 @@ class LocationsTable extends Table
     public function afterSave($event,$entity){
     if ($entity->isNew()) {
         $locationsTable = TableRegistry::get('Locations');
-        $address = urlencode($entity['street'] . ", " . $entity['city']. ", " . $entity['zip']. ", " . $entity['country']);
+        $address = urlencode($entity['street'] . " " . trim($entity['city']).", ".trim($entity['state']));
         //key is hardcoded here but should normally be held in a settings table
         $key = 'AIzaSyAK-NWUAnfQXs2j5vRGc-QfH7TgUDyMVGA';
     // Call the geocoding API with this location
         $xmlFile = file_get_contents("https://maps.googleapis.com/maps/api/geocode/xml?address={$address}&sensor=false&key={$key}");
-
     // get the longitude and latitude data from this location
         $xmlObj = Xml::build($xmlFile);
         //die();
