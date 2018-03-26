@@ -229,9 +229,9 @@ return [
              * the following line and set the port accordingly
              */
             //'port' => 'non_standard_port_number',
-            'username' => 'root',
-            'password' => 'Ilttml4e!',
-            'database' => 'LinxSmartSampleAssignment',
+            'username' => '',
+            'password' => '',
+            'database' => '',
             'encoding' => 'utf8',
             'timezone' => 'UTC',
             'flags' => [],

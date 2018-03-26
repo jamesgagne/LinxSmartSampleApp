@@ -114,7 +114,7 @@ class LocationsTable extends Table
     public function afterSave($event,$entity){
     if ($entity->isNew()) {
         $locationsTable = TableRegistry::get('Locations');
-        $address = urlencode($entity['street'] . " " . trim($entity['city']).", ".trim($entity['state']));
+        $address = urlencode(trim($entity['street']). " " . trim($entity['city']).", ".trim($entity['state'])." ". trim($entity['country']));
         //key is hardcoded here but should normally be held in a settings table
         $key = 'AIzaSyAK-NWUAnfQXs2j5vRGc-QfH7TgUDyMVGA';
     // Call the geocoding API with this location
